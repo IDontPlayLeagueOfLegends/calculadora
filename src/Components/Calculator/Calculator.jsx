@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, Component} from 'react'
 import './Calculator.css'
 import Button from '../Button/Button'
 import Display from '../Display/Display'
@@ -14,7 +14,7 @@ const initialState = {
 
 
 
-export default class Calculator extends Component {
+export default class Calculator extends React.Component {
 
   state = {...initialState}
   
@@ -23,6 +23,7 @@ export default class Calculator extends Component {
 
     this.clearMemory = this.clearMemory.bind(this)
     this.addNumber = this.addNumber.bind(this)
+    this.setOperation = this.setOperation.bind(this)
   }
 
 
@@ -37,8 +38,8 @@ export default class Calculator extends Component {
   
 
 
-  const clearDisplay = this.state.displayValue === '0' || state.clearDisplay
-  const currentValue = clearDisplay ? '' : state.displayValue
+  const clearDisplay = this.state.displayValue === '0' || this.state.clearDisplay
+  const currentValue = clearDisplay ? '' : this.state.displayValue
   const displayValue = currentValue + x 
 
   this.setState({displayValue: displayValue, clearDisplay: false })
@@ -63,7 +64,7 @@ export default class Calculator extends Component {
       const currentOperation = this.state.operation
       const values = [...this.state.values]
       try{
-        values[0] = eval(`${values[0]} ${currentOperation} ${values}[1]`)
+        values[0] = eval(`${values[0]} ${currentOperation} ${values[1]}`)
       }catch(erro){
         values[0] = this.state.values[0]
       }
@@ -88,7 +89,7 @@ export default class Calculator extends Component {
       <div className="calculator">
         <Display value={this.state.displayValue}/>
         <Button onClick ={this.clearMemory} triple label='AC'/>
-        <Button onClick ={this.setOperation} opetation label='/'/>
+        <Button onClick ={this.setOperation} operation label='/'/>
         <Button onClick={this.addNumber} label='7'/>
         <Button onClick={this.addNumber} label='8'/>
         <Button onClick={this.addNumber} label='9'/>
@@ -96,13 +97,13 @@ export default class Calculator extends Component {
         <Button onClick={this.addNumber} label='4'/>
         <Button onClick={this.addNumber} label='5'/>
         <Button onClick={this.addNumber} label='6'/>
-        <Button onClick={this.addNumber} label='-'/>
+        <Button onClick={this.setOperation} operation label='-'/>
         <Button onClick={this.addNumber} label='1'/>
         <Button onClick={this.addNumber} label='2'/>
         <Button onClick={this.addNumber} label='3'/>
         <Button operation onClick ={this.setOperation} label='+'/>
         <Button onClick={this.addNumber} double label='0'/>
-        <Button operation onClick ={this.setOperation} label='.'/>
+        <Button operation onClick ={this.addNumber} label='.'/>
         <Button onClick ={this.setOperation} operation label='='/>
       </div>
     )
